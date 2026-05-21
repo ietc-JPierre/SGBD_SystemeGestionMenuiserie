@@ -1,0 +1,47 @@
+<h1>Gestion du personnel</h1>
+
+<p>Total personnel : {{ personnelService.totalPersonnels() }}</p>
+
+@if (personnelService.error()) {
+  <p>{{ personnelService.error() }}</p>
+}
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <input formControlName="id" placeholder="ID personnel ex: EMP001" />
+  <input formControlName="nom" placeholder="Nom" />
+
+  <select formControlName="role">
+    <option value="">Choisir un rôle</option>
+    <option value="Menuisier">Menuisier</option>
+    <option value="Chef de chantier">Chef de chantier</option>
+    <option value="Commercial">Commercial</option>
+    <option value="Installateur">Installateur</option>
+  </select>
+
+  <button type="submit">
+    @if (editingId()) {
+      Modifier
+    } @else {
+      Ajouter
+    }
+  </button>
+
+  @if (editingId()) {
+    <button type="button" (click)="cancelEdit()">Annuler</button>
+  }
+</form>
+
+<hr />
+
+@for (personnel of personnelService.personnels(); track personnel.id) {
+  <div>
+    <h3>{{ personnel.nom }}</h3>
+    <p>ID : {{ personnel.id }}</p>
+    <p>Rôle : {{ personnel.role }}</p>
+
+    <button (click)="edit(personnel)">Modifier</button>
+    <button (click)="delete(personnel.id)">Supprimer</button>
+  </div>
+} @empty {
+  <p>Aucun personnel trouvé.</p>
+}

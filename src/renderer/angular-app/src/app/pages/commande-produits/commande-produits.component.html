@@ -1,0 +1,84 @@
+<h1>Lignes de commande</h1>
+
+<p>Total lignes : {{ commandeProduitService.totalLignes() }}</p>
+<p>Total calculé : {{ commandeProduitService.montantTotalLignes() }} €</p>
+
+@if (commandeProduitService.error()) {
+  <p>{{ commandeProduitService.error() }}</p>
+}
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <select formControlName="commandeId" [disabled]="editingIds()">
+    @for (commande of commandeService.commandes(); track commande.id) {
+      <option [value]="commande.id">
+        Commande #{{ commande.id }}
+        @if (commande.client) {
+          - {{ commande.client.nomClient }}
+        }
+      </option>
+    }
+  </select>
+
+  <select formControlName="produitId" [disabled]="editingIds()">
+    @for (produit of produitService.produits(); track produit.id) {
+      <option [value]="produit.id">
+        {{ produit.nomProduit }}
+      </option>
+    }
+  </select>
+
+  <select formControlName="dimensionId" [disabled]="editingIds()">
+    @for (dimension of dimensionService.dimensions(); track dimension.id) {
+      <option [value]="dimension.id">
+        H: {{ dimension.hauteur }} |
+        S: {{ dimension.section }} |
+        L: {{ dimension.largeur }}
+      </option>
+    }
+  </select>
+
+  <input formControlName="quantite" type="number" placeholder="Quantité" />
+  <input formControlName="prixUnitaire" type="number" placeholder="Prix unitaire" />
+
+  <button type="submit">
+    @if (editingIds()) {
+      Modifier
+    } @else {
+      Ajouter
+    }
+  </button>
+
+  @if (editingIds()) {
+    <button type="button" (click)="cancelEdit()">Annuler</button>
+  }
+</form>
+
+<hr />
+
+@for (ligne of commandeProduitService.commandeProduits(); track ligne.commandeId + '-' + ligne.produitId + '-' + ligne.dimensionId) {
+  <div>
+    <h3>Commande #{{ ligne.commandeId }}</h3>
+
+    @if (ligne.commande?.client) {
+      <p>Client : {{ ligne.commande.client.nomClient }}</p>
+    }
+
+    <p>Produit : {{ ligne.produit.nomProduit }}</p>
+
+    <p>
+      Dimension :
+      H {{ ligne.dimension.hauteur }},
+      S {{ ligne.dimension.section }},
+      L {{ ligne.dimension.largeur }}
+    </p>
+
+    <p>Quantité : {{ ligne.quantite }}</p>
+    <p>Prix unitaire : {{ ligne.prixUnitaire }} €</p>
+    <p>Total ligne : {{ ligne.quantite * ligne.prixUnitaire }} €</p>
+
+    <button (click)="edit(ligne)">Modifier</button>
+    <button (click)="delete(ligne)">Supprimer</button>
+  </div>
+} @empty {
+  <p>Veuillez ajouter des informations sur les lignes de commande.</p>
+}

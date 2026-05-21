@@ -1,0 +1,157 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model TypeClient {
+  id      Int      @id @default(autoincrement()) @map("Id_Type_client")
+  nomType String   @map("nom_type")
+  clients Client[]
+
+  @@map("Type_client")
+}
+
+model Categorie {
+  id          Int       @id @default(autoincrement()) @map("Id_Categorie")
+  nomCategorie String  @map("nom_categorie")
+  produits    Produit[]
+
+  @@map("Categorie")
+}
+
+model Dimension {
+  id      Int     @id @default(autoincrement()) @map("Id_Dimension")
+  hauteur Float
+  section Float
+  largeur Float
+
+  lignesCommande CommandeProduit[]
+
+  @@map("Dimension")
+}
+
+model Personnel {
+  id   String @id @map("Id_Personnel")
+  nom  String
+  role String
+
+  commandes PersonnelCommande[]
+
+  @@map("Personnel")
+}
+
+model CodePostalChantier {
+  codePostal String @id @map("code_postal")
+  ville      String
+
+  chantiers Chantier[]
+
+  @@map("Code_postal_chantier")
+}
+
+model Client {
+  id            Int    @id @default(autoincrement()) @map("Id_Client")
+  nomClient     String @map("nom_client")
+  adresseClient String @map("adresse_client")
+  telClient     String @map("tel_client")
+
+  typeClientId Int        @map("Id_Type_client")
+  typeClient   TypeClient @relation(fields: [typeClientId], references: [id], onDelete: Restrict)
+
+  commandes Commande[]
+  chantiers ClientChantier[]
+
+  @@map("Client")
+}
+
+model Produit {
+  id                  Int    @id @default(autoincrement()) @map("Id_Produit")
+  nomProduit           String @map("nom_produit")
+  prixUnitaireProduit  Float  @map("prix_unitaire_produit")
+
+  categorieId Int       @map("Id_Categorie")
+  categorie   Categorie @relation(fields: [categorieId], references: [id], onDelete: Restrict)
+
+  lignesCommande CommandeProduit[]
+
+  @@map("Produit")
+}
+
+model Chantier {
+  id                Int    @id @default(autoincrement()) @map("Id_Chantier")
+  nomChantier       String @map("nom_chantier")
+  rue               String
+  dateDebutChantier String @map("date_debut_chantier")
+  dateFinChantier   String @map("date_fin_chantier")
+
+  codePostal String              @map("code_postal")
+  ville      CodePostalChantier  @relation(fields: [codePostal], references: [codePostal], onDelete: Restrict)
+
+  clients ClientChantier[]
+
+  @@map("Chantier")
+}
+
+model Commande {
+  id             Int    @id @default(autoincrement()) @map("Id_Commande")
+  dateCommande   String @map("date_commande")
+  montantPaye    Float  @map("montant_paye")
+  resteAPayer    Float  @map("reste_a_payer")
+  statutCommande String @map("statut_commande")
+  totalCommande  Float  @map("total_commande")
+
+  clientId Int    @map("Id_Client")
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Restrict)
+
+  produits  CommandeProduit[]
+  personnel PersonnelCommande[]
+
+  @@map("Commande")
+}
+
+model ClientChantier {
+  clientId   Int @map("Id_Client")
+  chantierId Int @map("Id_Chantier")
+
+  client   Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  chantier Chantier @relation(fields: [chantierId], references: [id], onDelete: Cascade)
+
+  @@id([clientId, chantierId])
+  @@map("Client_chantier")
+}
+
+model CommandeProduit {
+  produitId   Int @map("Id_Produit")
+  dimensionId Int @map("Id_Dimension")
+  commandeId  Int @map("Id_Commande")
+
+  quantite     Int
+  prixUnitaire Float @map("prix_unitaire")
+
+  produit   Produit   @relation(fields: [produitId], references: [id], onDelete: Restrict)
+  dimension Dimension @relation(fields: [dimensionId], references: [id], onDelete: Restrict)
+  commande  Commande  @relation(fields: [commandeId], references: [id], onDelete: Cascade)
+
+  @@id([produitId, dimensionId, commandeId])
+  @@map("Commande_produit")
+}
+
+model PersonnelCommande {
+  personnelId String @map("Id_Personnel")
+  commandeId  Int    @map("Id_Commande")
+
+  personnel Personnel @relation(fields: [personnelId], references: [id], onDelete: Cascade)
+  commande  Commande  @relation(fields: [commandeId], references: [id], onDelete: Cascade)
+
+  @@id([personnelId, commandeId])
+  @@map("Personnel_commande")
+}

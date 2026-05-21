@@ -1,0 +1,68 @@
+<h1>Gestion des commandes</h1>
+
+<p>Total commandes : {{ commandeService.totalCommandes() }}</p>
+<p>Chiffre d'affaires total : {{ commandeService.totalChiffreAffaire() }} €</p>
+
+@if (commandeService.error()) {
+  <p>{{ commandeService.error() }}</p>
+}
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <input formControlName="dateCommande" type="date" />
+
+  <input formControlName="montantPaye" type="number" placeholder="Montant payé" />
+
+  <input formControlName="resteAPayer" type="number" placeholder="Reste à payer" />
+
+  <select formControlName="statutCommande">
+    <option value="En attente">En attente</option>
+    <option value="En cours">En cours</option>
+    <option value="Terminée">Terminée</option>
+    <option value="Annulée">Annulée</option>
+  </select>
+
+  <input formControlName="totalCommande" type="number" placeholder="Total commande" />
+
+  <select formControlName="clientId">
+    @for (client of clientService.clients(); track client.id) {
+      <option [value]="client.id">
+        {{ client.nomClient }}
+      </option>
+    }
+  </select>
+
+  <button type="submit">
+    @if (editingId()) {
+      Modifier
+    } @else {
+      Ajouter
+    }
+  </button>
+
+  @if (editingId()) {
+    <button type="button" (click)="cancelEdit()">Annuler</button>
+  }
+</form>
+
+<hr />
+
+@for (commande of commandeService.commandes(); track commande.id) {
+  <div>
+    <h3>Commande #{{ commande.id }}</h3>
+
+    <p>Date : {{ commande.dateCommande }}</p>
+    <p>Statut : {{ commande.statutCommande }}</p>
+    <p>Total : {{ commande.totalCommande }} €</p>
+    <p>Payé : {{ commande.montantPaye }} €</p>
+    <p>Reste : {{ commande.resteAPayer }} €</p>
+
+    @if (commande.client) {
+      <p>Client : {{ commande.client.nomClient }}</p>
+    }
+
+    <button (click)="edit(commande)">Modifier</button>
+    <button (click)="delete(commande.id)">Supprimer</button>
+  </div>
+} @empty {
+  <p>Aucune commande trouvée.</p>
+}

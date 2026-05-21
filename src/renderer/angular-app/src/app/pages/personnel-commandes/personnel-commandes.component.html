@@ -1,0 +1,50 @@
+<h1>Affectation du personnel aux commandes</h1>
+
+<p>Total affectations : {{ personnelCommandeService.totalAffectations() }}</p>
+
+@if (personnelCommandeService.error()) {
+  <p>{{ personnelCommandeService.error() }}</p>
+}
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <select formControlName="personnelId">
+    <option value="">Choisir un employé</option>
+
+    @for (personnel of personnelService.personnels(); track personnel.id) {
+      <option [value]="personnel.id">
+        {{ personnel.nom }} - {{ personnel.role }}
+      </option>
+    }
+  </select>
+
+  <select formControlName="commandeId">
+    @for (commande of commandeService.commandes(); track commande.id) {
+      <option [value]="commande.id">
+        Commande #{{ commande.id }}
+        @if (commande.client) {
+          - {{ commande.client.nomClient }}
+        }
+      </option>
+    }
+  </select>
+
+  <button type="submit">Affecter</button>
+</form>
+
+<hr />
+
+@for (affectation of personnelCommandeService.personnelCommandes(); track affectation.personnelId + '-' + affectation.commandeId) {
+  <div>
+    <h3>{{ affectation.personnel.nom }}</h3>
+    <p>Rôle : {{ affectation.personnel.role }}</p>
+    <p>Commande : #{{ affectation.commandeId }}</p>
+
+    @if (affectation.commande?.client) {
+      <p>Client : {{ affectation.commande.client.nomClient }}</p>
+    }
+
+    <button (click)="delete(affectation)">Supprimer</button>
+  </div>
+} @empty {
+  <p>Aucune affectation trouvée.</p>
+}

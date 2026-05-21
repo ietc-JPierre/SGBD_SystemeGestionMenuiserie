@@ -1,0 +1,50 @@
+<h1>Gestion des clients</h1>
+
+<p>Total clients : {{ clientService.totalClients() }}</p>
+
+@if (clientService.loading()) {
+  <p>Chargement...</p>
+}
+
+@if (clientService.error()) {
+  <p>{{ clientService.error() }}</p>
+}
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <input formControlName="nomClient" placeholder="Nom du client" />
+  <input formControlName="adresseClient" placeholder="Adresse" />
+  <input formControlName="telClient" placeholder="Téléphone" />
+
+  <input formControlName="typeClientId" type="number" placeholder="Type client ID" />
+
+  <button type="submit">
+    @if (editingId()) {
+      Modifier
+    } @else {
+      Ajouter
+    }
+  </button>
+
+  @if (editingId()) {
+    <button type="button" (click)="cancelEdit()">Annuler</button>
+  }
+</form>
+
+<hr />
+
+@for (client of clientService.clients(); track client.id) {
+  <div>
+    <h3>{{ client.nomClient }}</h3>
+    <p>{{ client.adresseClient }}</p>
+    <p>{{ client.telClient }}</p>
+
+    @if (client.typeClient) {
+      <p>Type : {{ client.typeClient.nomType }}</p>
+    }
+
+    <button (click)="edit(client)">Modifier</button>
+    <button (click)="delete(client.id)">Supprimer</button>
+  </div>
+} @empty {
+  <p>Aucun client trouvé.</p>
+}

@@ -1,0 +1,38 @@
+<h1>Codes postaux des chantiers</h1>
+
+<p>Total codes postaux : {{ codePostalService.totalCodesPostaux() }}</p>
+
+@if (codePostalService.error()) {
+  <p>{{ codePostalService.error() }}</p>
+}
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <input formControlName="codePostal" placeholder="Code postal" />
+  <input formControlName="ville" placeholder="Ville" />
+
+  <button type="submit">
+    @if (editingCodePostal()) {
+      Modifier
+    } @else {
+      Ajouter
+    }
+  </button>
+
+  @if (editingCodePostal()) {
+    <button type="button" (click)="cancelEdit()">Annuler</button>
+  }
+</form>
+
+<hr />
+
+@for (code of codePostalService.codesPostaux(); track code.codePostal) {
+  <div>
+    <h3>{{ code.ville }}</h3>
+    <p>Code postal : {{ code.codePostal }}</p>
+
+    <button (click)="edit(code)">Modifier</button>
+    <button (click)="delete(code.codePostal)">Supprimer</button>
+  </div>
+} @empty {
+  <p>Aucun code postal trouvé.</p>
+}

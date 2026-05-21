@@ -1,0 +1,61 @@
+<h1>Gestion des chantiers</h1>
+
+<p>Total chantiers : {{ chantierService.totalChantiers() }}</p>
+
+@if (chantierService.error()) {
+  <p>{{ chantierService.error() }}</p>
+}
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <input formControlName="nomChantier" placeholder="Nom du chantier" />
+  <input formControlName="rue" placeholder="Rue" />
+
+  <label>Date début</label>
+  <input formControlName="dateDebutChantier" type="date" />
+
+  <label>Date fin</label>
+  <input formControlName="dateFinChantier" type="date" />
+
+  <select formControlName="codePostal">
+    <option value="">Choisir une ville</option>
+
+    @for (code of codePostalService.codesPostaux(); track code.codePostal) {
+      <option [value]="code.codePostal">
+        {{ code.codePostal }} - {{ code.ville }}
+      </option>
+    }
+  </select>
+
+  <button type="submit">
+    @if (editingId()) {
+      Modifier
+    } @else {
+      Ajouter
+    }
+  </button>
+
+  @if (editingId()) {
+    <button type="button" (click)="cancelEdit()">Annuler</button>
+  }
+</form>
+
+<hr />
+
+@for (chantier of chantierService.chantiers(); track chantier.id) {
+  <div>
+    <h3>{{ chantier.nomChantier }}</h3>
+
+    <p>Rue : {{ chantier.rue }}</p>
+    <p>Début : {{ chantier.dateDebutChantier }}</p>
+    <p>Fin : {{ chantier.dateFinChantier }}</p>
+
+    @if (chantier.ville) {
+      <p>Ville : {{ chantier.ville.codePostal }} - {{ chantier.ville.ville }}</p>
+    }
+
+    <button (click)="edit(chantier)">Modifier</button>
+    <button (click)="delete(chantier.id)">Supprimer</button>
+  </div>
+} @empty {
+  <p>Aucun chantier trouvé.</p>
+}

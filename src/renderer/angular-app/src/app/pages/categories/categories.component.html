@@ -1,0 +1,58 @@
+<h1>Gestion des catégories</h1>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+
+  <input
+    type="text"
+    formControlName="nomCategorie"
+    placeholder="Nom de la catégorie"
+  />
+
+  <button type="submit">
+
+    @if (editingId()) {
+      Modifier
+    } @else {
+      Ajouter
+    }
+
+  </button>
+
+  @if (editingId()) {
+
+    <button
+      type="button"
+      (click)="cancelEdit()"
+    >
+      Annuler
+    </button>
+
+  }
+
+</form>
+
+<hr />
+
+<h2>Liste des catégories</h2>
+
+@for (category of categorieService.categories(); track category.id) {
+
+  <div class="category-card">
+
+    <h3>{{ category.nomCategorie }}</h3>
+
+    <button (click)="edit(category)">
+      Modifier
+    </button>
+
+    <button (click)="delete(category.id)">
+      Supprimer
+    </button>
+
+  </div>
+
+} @empty {
+
+  <p>Aucune catégorie trouvée.</p>
+
+}

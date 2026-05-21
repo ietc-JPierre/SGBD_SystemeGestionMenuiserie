@@ -1,0 +1,53 @@
+<h1>Association clients / chantiers</h1>
+
+<p>Total associations : {{ clientChantierService.totalAffectations() }}</p>
+
+@if (clientChantierService.error()) {
+  <p>{{ clientChantierService.error() }}</p>
+}
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <select formControlName="clientId">
+    @for (client of clientService.clients(); track client.id) {
+      <option [value]="client.id">
+        {{ client.nomClient }}
+      </option>
+    }
+  </select>
+
+  <select formControlName="chantierId">
+    @for (chantier of chantierService.chantiers(); track chantier.id) {
+      <option [value]="chantier.id">
+        {{ chantier.nomChantier }}
+        @if (chantier.ville) {
+          - {{ chantier.ville.ville }}
+        }
+      </option>
+    }
+  </select>
+
+  <button type="submit">Associer</button>
+</form>
+
+<hr />
+
+@for (association of clientChantierService.clientChantiers(); track association.clientId + '-' + association.chantierId) {
+  <div>
+    <h3>{{ association.client.nomClient }}</h3>
+
+    <p>Chantier : {{ association.chantier.nomChantier }}</p>
+    <p>Rue : {{ association.chantier.rue }}</p>
+
+    @if (association.chantier.ville) {
+      <p>
+        Ville :
+        {{ association.chantier.ville.codePostal }}
+        {{ association.chantier.ville.ville }}
+      </p>
+    }
+
+    <button (click)="delete(association)">Supprimer</button>
+  </div>
+} @empty {
+  <p>Aucune association trouvée.</p>
+}

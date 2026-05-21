@@ -1,0 +1,36 @@
+<h1>Dashboard</h1>
+
+<div>
+  <h2>Statistiques générales</h2>
+
+  <p>
+    Nombre de clients :
+    {{ clientService.totalClients() }}
+  </p>
+
+  <p>
+    Nombre de produits :
+    {{ produitService.totalProduits() }}
+  </p>
+
+  <p>
+    Nombre de commandes :
+    {{ commandeService.totalCommandes() }}
+  </p>
+
+  <p>
+    Nombre de chantiers :
+    {{ chantierService.totalChantiers() }}
+  </p>
+</div>
+
+<hr />
+
+<div>
+  <h2>Finances</h2>
+
+  <p>
+    Chiffre d'affaires total :
+    {{ commandeService.totalChiffreAffaire() }} €
+  </p>
+</div>

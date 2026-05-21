@@ -1,0 +1,38 @@
+<h1>Gestion des dimensions</h1>
+
+<p>Total dimensions : {{ dimensionService.totalDimensions() }}</p>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <input formControlName="hauteur" type="number" placeholder = "Hauteur" />
+  <input formControlName="section" type="number" placeholder = "Section" />
+  <input formControlName="largeur" type="number" placeholder = "Largeur" />
+
+  <button type="submit">
+    @if (editingId()) {
+      Modifier
+    } @else {
+      Ajouter
+    }
+  </button>
+
+  @if (editingId()) {
+    <button type="button" (click)="cancelEdit()">Annuler</button>
+  }
+</form>
+
+<hr />
+
+@for (dimension of dimensionService.dimensions(); track dimension.id) {
+  <div>
+    <p>
+      Hauteur : {{ dimension.hauteur }} |
+      Section : {{ dimension.section }} |
+      Largeur : {{ dimension.largeur }}
+    </p>
+
+    <button (click)="edit(dimension)">Modifier</button>
+    <button (click)="delete(dimension.id)">Supprimer</button>
+  </div>
+} @empty {
+  <p>Entrez les dimensions.</p>
+}

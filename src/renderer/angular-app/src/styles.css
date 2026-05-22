@@ -1,1 +1,58 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f4f6f9;
+  color: #b9843e;
+}
+
+h1,
+h2,
+h3 {
+  margin-top: 0;
+}
+
+button {
+  cursor: pointer;
+}
+
+.page-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgb(172, 229, 148);
+}
+
+form {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+input,
+select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+button {
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: #d0b4728d;
+  color: rgb(247, 164, 11);
+  font-weight: bold;
+}
+
+button:hover {
+  background: #55d81d6c;
+}
+
+hr {
+  margin: 20px 0;
+}

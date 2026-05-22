@@ -6,7 +6,8 @@
   "main": ".vite/build/main.js",
   "private": true,
   "scripts": {
-    "start": "electron-forge start",
+    "start": "npm run build:angular && electron-forge start",
+    "build:angular": "cd src/renderer/angular-app && ng build --base-href ./",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",

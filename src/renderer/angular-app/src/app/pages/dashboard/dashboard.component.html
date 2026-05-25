@@ -1,36 +1,51 @@
 <h1>Dashboard</h1>
 
-<div>
-  <h2>Statistiques générales</h2>
+<h2>Statistiques générales</h2>
 
-  <p>
-    Nombre de clients :
-    {{ clientService.totalClients() }}
-  </p>
-
-  <p>
-    Nombre de produits :
-    {{ produitService.totalProduits() }}
-  </p>
-
-  <p>
-    Nombre de commandes :
-    {{ commandeService.totalCommandes() }}
-  </p>
-
-  <p>
-    Nombre de chantiers :
-    {{ chantierService.totalChantiers() }}
-  </p>
-</div>
+<p>Clients : {{ clientService.totalClients() }}</p>
+<p>Produits : {{ produitService.totalProduits() }}</p>
+<p>Commandes : {{ commandeService.totalCommandes() }}</p>
+<p>Chantiers : {{ chantierService.totalChantiers() }}</p>
 
 <hr />
 
-<div>
-  <h2>Finances</h2>
+<h2>Finances</h2>
 
-  <p>
-    Chiffre d'affaires total :
-    {{ commandeService.totalChiffreAffaire() }} €
-  </p>
-</div>
+<p>
+  Chiffre d'affaires total :
+  {{ commandeService.totalChiffreAffaire() }} €
+</p>
+
+<p>
+  Chiffre d'affaires annuel :
+  {{ commandeService.chiffreAffaireAnnuel() }} €
+</p>
+
+<p>
+  Chiffre d'affaires mensuel :
+  {{ commandeService.chiffreAffaireMensuel() }} €
+</p>
+
+<p>
+  Total payé :
+  {{ commandeService.totalPaye() }} €
+</p>
+
+<p>
+  Reste à payer :
+  {{ commandeService.resteAPayerTotal() }} €
+</p>
+
+<hr />
+
+<h2>Commandes</h2>
+
+<p>
+  Commandes cette année :
+  {{ commandeService.commandesAnnee().length }}
+</p>
+
+<p>
+  Commandes ce mois :
+  {{ commandeService.commandesMois().length }}
+</p>

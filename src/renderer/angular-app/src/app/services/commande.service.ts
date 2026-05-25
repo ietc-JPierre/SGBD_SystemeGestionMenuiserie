@@ -14,6 +14,56 @@ export class CommandeService {
     this.commandes().reduce((total, commande) => total + commande.totalCommande, 0)
   );
 
+  anneeActuelle = new Date().getFullYear();
+moisActuel = new Date().getMonth();
+
+commandesAnnee = computed(() =>
+  this.commandes().filter((commande) => {
+    const date = new Date(commande.dateCommande);
+
+    return date.getFullYear() === this.anneeActuelle;
+  })
+);
+
+commandesMois = computed(() =>
+  this.commandes().filter((commande) => {
+    const date = new Date(commande.dateCommande);
+
+    return (
+      date.getFullYear() === this.anneeActuelle &&
+      date.getMonth() === this.moisActuel
+    );
+  })
+);
+
+chiffreAffaireAnnuel = computed(() =>
+  this.commandesAnnee().reduce(
+    (total, commande) => total + commande.totalCommande,
+    0
+  )
+);
+
+chiffreAffaireMensuel = computed(() =>
+  this.commandesMois().reduce(
+    (total, commande) => total + commande.totalCommande,
+    0
+  )
+);
+
+totalPaye = computed(() =>
+  this.commandes().reduce(
+    (total, commande) => total + commande.montantPaye,
+    0
+  )
+);
+
+resteAPayerTotal = computed(() =>
+  this.commandes().reduce(
+    (total, commande) => total + commande.resteAPayer,
+    0
+  )
+);
+
   async loadCommandes() {
     this.loading.set(true);
     this.error.set(null);

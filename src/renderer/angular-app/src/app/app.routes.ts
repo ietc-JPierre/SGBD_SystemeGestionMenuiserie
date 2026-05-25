@@ -13,7 +13,7 @@ import { ClientChantiersComponent } from './pages/client-chantiers/client-chanti
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'clients', pathMatch: 'full' },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'clients', component: ClientsComponent, },
   { path: 'categories', component: CategoriesComponent, },
   { path: 'dimensions', component: DimensionsComponent, },

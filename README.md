@@ -42,9 +42,15 @@ Le projet contient des relations :
 - N:M entre Personnel et Commande via PersonnelCommande
 - N:M entre Client et Chantier via ClientChantier
 
+
+## Schéma relationnel
+
+Le schéma relationnel de la base de données est disponible dans :
+
+docs/schema-relationnel.png
+
 ## Installation
 
-```bash
 npm install
 
 Configuration de la base de données
@@ -67,7 +73,7 @@ npm run prisma:generate
 npm run prisma:studio
 npm run seed
 
-##Architecture
+## Architecture
 
 L'application respecte l'architecture Electron :
 
@@ -82,7 +88,8 @@ Commande de remise
 
 Le projet peut être lancé avec :
 
-npm run start
+npm run star
+
 SystemeGestionMenuiserie/
 │
 ├── prisma/

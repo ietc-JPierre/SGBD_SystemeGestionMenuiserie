@@ -88,7 +88,7 @@ Commande de remise
 
 Le projet peut être lancé avec :
 
-npm run star
+npm run start
 
 SystemeGestionMenuiserie/
 │
@@ -177,3 +177,7 @@ SystemeGestionMenuiserie/
 ├── package.json
 ├── forge.config.ts
 └── README.md
+
+## Auteur
+**Jean Pierre NSENGIYUMVA**
+-GitHub : [@ietc-JPierre] (https://github.com/ietc-JPierre/SGBD_SystemeGestionMenuiserie.git)

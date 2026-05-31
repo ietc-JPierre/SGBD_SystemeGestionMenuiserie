@@ -51,27 +51,73 @@ docs/schema-relationnel.png
 
 ## Installation
 
+### 1. Cloner le projet
+
+git clone https://github.com/ietc-JPierre/SGBD_SystemeGestionMenuiserie.git
+cd SGBD_SystemeGestionMenuiserie
+
+
+### 2. Installer les dépendances du projet Electron
+
 npm install
 
-Configuration de la base de données
+### 3. Installer les dépendances Angular
 
-Créer le fichier .env à la racine :
+cd src/renderer/angular-app
+npm install
+cd ../../..
+
+### 4. Configurer la base de données
+Créer un fichier .env à la racine du projet :
+
 
 DATABASE_URL="file:./dev.db"
 
-Puis lancer :
 
-npx prisma migrate dev
+### 5. Générer Prisma et créer la base de données
+
+
 npx prisma generate
+npx prisma migrate dev
 npm run seed
-Lancement de l'application
+
+
+### 6. Lancer l'application
+
 npm run start
-Scripts utiles
+
+## Scripts utiles
+
 npm run start
+npm run seed
 npm run prisma:migrate
 npm run prisma:generate
 npm run prisma:studio
-npm run seed
+
+
+## Dépannage
+
+### Erreur : Environment variable not found: DATABASE_URL
+
+Vérifier que le fichier .env existe à la racine :
+
+DATABASE_URL="file:./dev.db"
+
+
+### Erreur : @prisma/client did not initialize yet
+
+Exécuter :
+
+npx prisma generate
+
+### Erreur : Could not find the '@angular/build:application' builder's node package
+
+Installer les dépendances Angular :
+
+cd src/renderer/angular-app
+npm install
+
+
 
 ## Architecture
 
@@ -180,4 +226,5 @@ SystemeGestionMenuiserie/
 
 ## Auteur
 **Jean Pierre NSENGIYUMVA**
--GitHub : [@ietc-JPierre] (https://github.com/ietc-JPierre/SGBD_SystemeGestionMenuiserie.git)
+-GitHub : 
+https://github.com/ietc-JPierre/SGBD_SystemeGestionMenuiserie.git
